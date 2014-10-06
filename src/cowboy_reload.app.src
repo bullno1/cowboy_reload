@@ -1,0 +1,18 @@
+{application, cowboy_reload, [
+	{description, "livereload.js server using cowboy"},
+	{vsn, "0.0.1"},
+	{registered, [cowboy_reload_sup]},
+	{applications, [
+		kernel,
+		stdlib,
+		cowboy,
+		jsx,
+		gproc,
+		gen_os_proc
+	]},
+	{mod, { cowboy_reload, []}},
+	{env, [
+		{port, 35729},
+		{watch_path, "priv/www"}
+	]}
+]}.
