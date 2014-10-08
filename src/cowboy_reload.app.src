@@ -1,7 +1,11 @@
 {application, cowboy_reload, [
 	{description, "livereload.js server using cowboy"},
 	{vsn, "0.0.1"},
-	{registered, [cowboy_reload_sup]},
+	{registered, [
+		cowboy_reload_sup,
+		cowboy_reload_watcher,
+		cowboy_reload_gulp
+	]},
 	{applications, [
 		kernel,
 		stdlib,

@@ -8,7 +8,7 @@ start_link() ->
 
 init([]) ->
 	%{Name, {Module, StartFunc, Args}, permanent, 5000, supervisor, [Module]}
-	ChildSpecs = [ranch_spec(), watcher_spec()],
+	ChildSpecs = [ranch_spec(), watcher_spec(), gulp_spec()],
 	{ok, { {one_for_one, 5, 60}, ChildSpecs}}.
 
 ranch_spec() ->
@@ -27,4 +27,9 @@ ranch_spec() ->
 watcher_spec() ->
 	{cowboy_reload_watcher,
 	 {cowboy_reload_watcher, start_link, ["priv/www"]},
-	 permanent, 1000, supervisor, [cowboy_reload_watcher]}.
+	 permanent, 1000, worker, [cowboy_reload_watcher]}.
+
+gulp_spec() ->
+	{cowboy_reload_gulp,
+	 {cowboy_reload_gulp, start_link, []},
+	 permanent, 1000, worker, [cowboy_reload_gulp]}.
