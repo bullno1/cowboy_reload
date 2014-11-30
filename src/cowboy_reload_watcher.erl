@@ -9,7 +9,7 @@
 	watch_path
 }).
 
-start_link(WatchPath) -> gen_server:start_link({local, ?MODULE}, ?MODULE, WatchPath, []).
+start_link(WatchPath) -> gen_server:start_link(?MODULE, WatchPath, []).
 
 % gen_server
 
