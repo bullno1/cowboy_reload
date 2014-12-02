@@ -17,6 +17,7 @@
 	{mod, { cowboy_reload, []}},
 	{env, [
 		{port, 35729},
+		{delay, 300},
 		{watch_paths, ["priv/www", "templates"]}
 	]}
 ]}.

@@ -9,7 +9,8 @@ start_link() ->
 init([]) ->
 	%{Name, {Module, StartFunc, Args}, permanent, 5000, supervisor, [Module]}
 	{ok, WatchPaths} = application:get_env(cowboy_reload, watch_paths),
-	WatcherSpecs = [watcher_spec(Path) || Path <- WatchPaths],
+	{ok, Delay} = application:get_env(cowboy_reload, delay),
+	WatcherSpecs = [watcher_spec(Path, Delay) || Path <- WatchPaths],
 	ChildSpecs = [ranch_spec(), gulp_spec() | WatcherSpecs],
 	{ok, { {one_for_one, 5, 60}, ChildSpecs}}.
 
@@ -26,9 +27,9 @@ ranch_spec() ->
 	ProtoOpts = [{env, [{dispatch, Dispatch}]}],
 	ranch:child_spec(cowboy_reload_http, 100, ranch_tcp, TransOpts, cowboy_protocol, ProtoOpts).
 
-watcher_spec(Path) ->
+watcher_spec(Path, Delay) ->
 	{{cowboy_reload_watcher, Path},
-	 {cowboy_reload_watcher, start_link, [Path]},
+	 {cowboy_reload_watcher, start_link, [Path, Delay]},
 	 permanent, 1000, worker, [cowboy_reload_watcher]}.
 
 gulp_spec() ->
